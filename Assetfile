@@ -1,35 +1,100 @@
 require "rake-pipeline-web-filters"
 require 'rake-pipeline-i18n-filters'
 require 'rake-pipeline-web-filters/filter_with_dependencies'
-require 'compass'
+require "uglifier"
+
+$: << 'app/submodules/th-client-core/rakep'
+require "th_filters"
 
 Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = Encoding::UTF_8
 
-class AddMicroLoader < Rake::Pipeline::Filter
-  LOADER = File.expand_path("../app/submodules/ember.js/packages/loader/lib/main.js", __FILE__)
 
-  def initialize(options={}, &block)
-    super(&block)
-    @global = options[:global]
-  end
+output "source"
 
-  def generate_output(inputs, output)
-    output.write "(function() {\n" unless @global
 
-    output.write File.read(LOADER)
+input "."  do
 
-    inputs.each do |input|
-      output.write input.read
-    end
+	match "app/submodules/th-client-views/styles/views/**/*.less" do
+		filter Th::LessFilter
+		filter ConcatFilter, "projecttmp.css"
+	end
 
-    output.write "\n})();\n" unless @global
-  end
-
-  def additional_dependencies(input)
-    [ LOADER ]
-  end
 end
 
+input "app"  do
+
+	match "submodules/th-client-views/templates/**/*.hbs" do
+		filter Th::HandlebarsPrecompiler
+		filter ConcatFilter, "apptmp.js"
+    filter Th::AddMicroLoader, :global => true
+	end
+
+	match "submodules/th-client-core/vendor/precompile/ember-handlebars-require.js" do
+		filter ConcatFilter, "apptmp.js"
+  end
+
+	match "app/lib/**/*.js" do
+		minispade :rewrite_requires => true, :string=> false, :module_id_generator => proc { |input|
+			id = input.path.dup
+			id.sub!('/lib/', '/')
+			id.sub!(/\.js$/, '')
+			id.sub!(/\/main$/, '')
+			id
+		}
+		concat "apptmp.js"
+    filter Th::AddMicroLoader, :global => true
+	end
+
+	match "submodules/{th-client-core,th-client-views}/lib/**/*.js" do
+		minispade :rewrite_requires => true, :string=> false, :module_id_generator => proc { |input|
+			id = input.path.dup
+			id.sub!('submodules/', '')
+			id.sub!('/lib/', '/')
+			id.sub!(/\.js$/, '')
+			id.sub!(/\/main$/, '')
+			id
+		}
+	 concat "apptmp.js"
+   filter Th::AddMicroLoader, :global => true
+	end
+
+	match "submodules/*/packages/{ember-data,ember-application,ember-routing,ember-debug,ember-metal,ember-runtime,ember-states,ember-views,rsvp,container,metamorph,ember-handlebars-compiler,ember-handlebars,ember-touch,handlebars}/lib/**/.js" do
+		minispade :rewrite_requires => true, :string=> false, :module_id_generator => proc { |input|
+			id = input.path.dup
+			id.sub!('submodules/', '')
+			id.sub!(/[a-z\-\.]+\//, '')
+			id.sub!('packages/', '')
+			id.sub!('/lib/', '/')
+			id.sub!(/\.js$/, '')
+			id.sub!(/\/main$/, '')
+			id
+		}
+	 concat "apptmp.js"
+   filter Th::InternalHandlebarsPrecompiler
+   filter Th::AddMicroLoader, :global => true
+	end
+
+	match "submodules/th-client-core/vendor/minispade.js" do
+		filter ConcatFilter, "apptmp.js"
+	end
+
+	match "submodules/ember.js/lib/jquery-1.9.0.js" do
+		filter ConcatFilter, "apptmp.js"
+	end
+
+end
+
+input "source"  do
+
+	match "apptmp.js" do
+		filter ConcatFilter, "app.js"
+	end
+
+	match "projecttmp.css" do
+		filter ConcatFilter, "project.css"
+	end
+
+end
 
 # vim: filetype=ruby
