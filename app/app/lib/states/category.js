@@ -14,7 +14,10 @@ Th.CategoryState = Em.State.extend({
 
 	},
 
-	selectCategory: function(sm) {
+	selectCategory: function(sm, category) {
+
+    App.categoryController.set('selected', category);
+    App.eventController.filterByCategory(category);
 		sm.goToState('landing');
 
 	},

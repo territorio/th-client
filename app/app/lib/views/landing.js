@@ -25,6 +25,12 @@ App.LandingScreenView = Th.LandingScreenView.extend(Th.Context, {
 	gestureDelegate: App.landingGestureDelegate,
 
 	isAsideLeftBinding: Em.Binding.oneWay('App.applicationController.isMenuCategory'),
+
+	categoriesBinding: Em.Binding.oneWay('App.categoryController.content'),
+  selectedCategoryBinding: Em.Binding.oneWay('App.categoryController.selected'),
+
+	eventsBinding: Em.Binding.oneWay('App.eventController.content'),
+
 	action: 'closeCategory'
 
 });

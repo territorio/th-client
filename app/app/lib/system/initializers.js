@@ -17,6 +17,8 @@ Ember.Application.initializer({
 
   initialize: function(container) {
 		App.applicationController = Th.ApplicationController.create();
+		App.categoryController = Th.CategoryController.create();
+		App.eventController = Th.EventController.create();
   }
 
 });
