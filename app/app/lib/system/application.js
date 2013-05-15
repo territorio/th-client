@@ -1,4 +1,3 @@
-
 Th.Application = Em.Application.extend(Th.HasConnection, Th.Alert, {
 
   ready: function() {
@@ -7,18 +6,13 @@ Th.Application = Em.Application.extend(Th.HasConnection, Th.Alert, {
 
   },
 
-  _initStore: function() {
+  _readSettings: function() {
 
-    /*
-    var adapter = DS.RESTAdapter.create({
-      url: Th.Settings.server
-    });
-    this.store = DS.Store.create({
-      revision: 12,
-      adapter: adapter
-    });
-    */
+    var isNative = (window.DeviceInfo && DeviceInfo.uuid !== undefined) || 
+        (window.device && device.uuid !== undefined);
 
+
+    this.isNative = (!!isNative);
   },
 
   _fetchContent: function(next) {
@@ -26,20 +20,31 @@ Th.Application = Em.Application.extend(Th.HasConnection, Th.Alert, {
     var self = this;
 
     var date = moment().format("YYYYMMDD");
-    //var date = '20130205';
-    var data = {api: 'true', sideload: 'true', date: date};
+    //var date = '20130215';
+    var data = { api: 'true', sideload: 'true', date: date};
+
+    var url = Th.Settings.server;
 
     jQuery.ajax({
-      url: Th.Settings.server,
+      url: url,
       type: 'GET',
-      dataType: 'json',
       data: data, 
+      crossDomain: true,
+      dataType: 'jsonp',
       contentType: 'application/json; charset=utf-8',
+      //dataType: 'html',
+      //contentType: 'text/html; charset=utf-8',
       //cache: false,
+      
 
       success: function(response) {
+
+        console.log('response---->....');
+        console.log(response);
+
         var categories = response.categories;
         var events = response.events;
+        //console.log(events);
 
         App.categoryController.set('content', categories);
 
@@ -53,11 +58,13 @@ Th.Application = Em.Application.extend(Th.HasConnection, Th.Alert, {
       },
 
       error: function(response) {
-
+        console.log('error ...');
+        /*
         var text = "Ha habido un problema obteniendo el contenido. Inténtelo más tarde si el problema continúa.";
         self.alert(text, function() {
           self._fetchContent(next);
         });
+        */
 
       }
     
@@ -76,7 +83,7 @@ Th.Application = Em.Application.extend(Th.HasConnection, Th.Alert, {
 
   _startWithConnection: function() {
 
-    this._initStore();
+    this._readSettings();
 
     var self = this;
     this.hasConnection(function() {

@@ -26,6 +26,7 @@ input "app/submodules/th-client-views/assets"  do
   end
 end
 
+is_android = !ENV['ANDROID'].nil? && !ENV['ANDROID'].empty?
 
 output "tmp/source"
 input "."  do
@@ -99,6 +100,19 @@ input "app"  do
 
 	match "submodules/th-client-core/vendor/*.js" do
 		filter ConcatFilter, "apptmp.js"
+	end
+
+
+  if is_android
+    match "vendor/android/*.js" do
+      filter OrderingConcatFilter, ["vendor/android/cordova.android.js"], "apptmp.js"
+    end
+  else 
+=begin
+    match "vendor/ios/*.js" do
+      filter OrderingConcatFilter, ["vendor/phonegap/ios/cordova.ios.js"], "apptmp.js"
+    end
+=end
 	end
 
 end
