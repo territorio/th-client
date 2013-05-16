@@ -117,20 +117,29 @@ input "app"  do
 
 end
 
+production = !ENV['PROD'].nil? && !ENV['PROD'].empty?
+
 output "source"
 input "tmp/source"  do
 
 	match "apptmp.js" do
+    if production
+      filter Th::EmberProductionFilter
+      uglify( {:copyright => false} )
+    end
 		filter ConcatFilter, "app.js"
 	end
 
 
 end
 
+
+
 output "source/css"
 input "tmp/source"  do
 
 	match "projecttmp.css" do
+    yui_css if production
 		filter ConcatFilter, "project.css"
 	end
 

@@ -1,4 +1,4 @@
-Th.Application = Em.Application.extend(Th.HasConnection, Th.Alert, {
+Th.Application = Em.Application.extend(Th.InitDocumentEvent, Th.HasConnection, Th.Alert, {
 
   ready: function() {
     
@@ -19,7 +19,8 @@ Th.Application = Em.Application.extend(Th.HasConnection, Th.Alert, {
     
     var self = this;
 
-    var date = moment().format("YYYYMMDD");
+    var date = moment().format(Th.Settings.dateFormat);
+    App.applicationController.set('date', date);
     //var date = '20130215';
     var data = { api: 'true', sideload: 'true', date: date};
 
@@ -32,19 +33,12 @@ Th.Application = Em.Application.extend(Th.HasConnection, Th.Alert, {
       crossDomain: true,
       dataType: 'jsonp',
       contentType: 'application/json; charset=utf-8',
-      //dataType: 'html',
-      //contentType: 'text/html; charset=utf-8',
-      //cache: false,
-      
 
       success: function(response) {
 
-        console.log('response---->....');
-        console.log(response);
 
         var categories = response.categories;
         var events = response.events;
-        //console.log(events);
 
         App.categoryController.set('content', categories);
 
@@ -58,13 +52,11 @@ Th.Application = Em.Application.extend(Th.HasConnection, Th.Alert, {
       },
 
       error: function(response) {
-        console.log('error ...');
-        /*
+
         var text = "Ha habido un problema obteniendo el contenido. Inténtelo más tarde si el problema continúa.";
         self.alert(text, function() {
           self._fetchContent(next);
         });
-        */
 
       }
     
@@ -72,10 +64,43 @@ Th.Application = Em.Application.extend(Th.HasConnection, Th.Alert, {
 
   },
 
+  backbutton: function() {
+
+    var manager = this.__container__.lookup('manager:application');
+
+    var state = manager.get('currentState.name');
+
+    if ( state === 'landing' ) {
+
+        navigator.notification.confirm('¿Desea cerrar la aplicación?', 
+                  function(confirm) {
+                    if ( confirm === 1 ) { navigator.app.exitApp(); };
+                  }, 
+                  'Territorio Huelva', 
+                  'Si,Cancelar' );
+
+    } else if ( state === 'category' ) {
+      manager.send('closeCategory');
+    }
+
+  },
+
+
   _insertViews: function() {
     
     var view = App.LandingScreenView.create({
       container: this.__container__
+    });
+
+    view.one('didInsertElement', function() {
+
+      if ( App.isNative ) { 
+
+        Ember.run.schedule('afterRender', function() {
+          navigator.splashscreen.hide(); 
+        });
+      
+      }
     });
     view.appendTo('#init-app');
 
@@ -84,12 +109,16 @@ Th.Application = Em.Application.extend(Th.HasConnection, Th.Alert, {
   _startWithConnection: function() {
 
     this._readSettings();
+    this._initDocumentEvents({backbutton: 'backbutton'});
+
+    this._insertViews();
+
+            
 
     var self = this;
     this.hasConnection(function() {
 
       self._fetchContent(function() {
-        self._insertViews();
       });
 
     }, function() {

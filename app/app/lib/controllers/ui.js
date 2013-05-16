@@ -1,3 +1,5 @@
 Th.ApplicationController = Em.ObjectController.extend({
-	isMenuCategory: false
+	isMenuCategory: false,
+
+  date: null
 });

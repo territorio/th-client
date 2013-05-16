@@ -3,6 +3,12 @@ Th.EventController = Em.ArrayController.extend({
   all: null,
   content: null,
 
+  init: function() {
+    this._super();
+    this.clear();
+
+  },
+
   clear: function() {
     this.set('all', null);
     this.set('content', null);

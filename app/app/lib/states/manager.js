@@ -25,7 +25,7 @@ Th.StateManager = Em.StateManager.extend({
   initialState: 'landing',
 
   landing: Th.LandingState.extend(),
-  date: Th.DateState.extend(),
-  category: Th.CategoryState.extend()
+  category: Th.CategoryState.extend(),
+  date: Th.DateState.extend()
 
 });

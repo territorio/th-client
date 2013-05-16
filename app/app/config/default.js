@@ -1,6 +1,8 @@
 
 Th.Settings = { 
 
-  server: 'http://localhost'
+  server: 'http://localhost',
+
+  dateFormat: 'YYYYMMDD'
 
 };
