@@ -20,11 +20,16 @@ Th.DateState = Em.State.extend({
 
       window.plugins.datePicker.show(options, function(result) {
 
-        var nativeDate = result.date;
+        var nativeDate = App.isAndroid ? result.date : result;
 
         if (nativeDate) {
+          var selectedDate;
 
-          var selectedDate = moment(nativeDate, 'YYYY/MM/DD').format(Th.Settings.dateFormat);
+          if ( App.isAndroid ) {
+            selectedDate = moment(nativeDate, 'YYYY/MM/DD').format(Th.Settings.dateFormat);
+          } else {
+            selectedDate = moment(nativeDate).format(Th.Settings.dateFormat);
+          }
 
           if ( oldDate !== selectedDate ) {
             self.chooseDate(sm, selectedDate);

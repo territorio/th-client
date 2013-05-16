@@ -108,11 +108,9 @@ input "app"  do
       filter OrderingConcatFilter, ["vendor/android/cordova.android.js"], "apptmp.js"
     end
   else 
-=begin
     match "vendor/ios/*.js" do
-      filter OrderingConcatFilter, ["vendor/phonegap/ios/cordova.ios.js"], "apptmp.js"
+      filter OrderingConcatFilter, ["vendor/phonegap/ios/cordova.js"], "apptmp.js"
     end
-=end
 	end
 
 end

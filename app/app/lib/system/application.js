@@ -13,6 +13,7 @@ Th.Application = Em.Application.extend(Th.InitDocumentEvent, Th.HasConnection, T
 
 
     this.isNative = (!!isNative);
+		this.isAndroid = navigator.userAgent.match(/Android/i) ? true : false;
   },
 
   _fetchContent: function(next) {
@@ -20,8 +21,8 @@ Th.Application = Em.Application.extend(Th.InitDocumentEvent, Th.HasConnection, T
     var self = this;
 
     var date = moment().format(Th.Settings.dateFormat);
-    App.applicationController.set('date', date);
     //var date = '20130215';
+    App.applicationController.set('date', date);
     var data = { api: 'true', sideload: 'true', date: date};
 
     var url = Th.Settings.server;
