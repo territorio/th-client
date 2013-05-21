@@ -9,9 +9,10 @@ Th.DateState = Em.State.extend({
 
       var oldDate = App.applicationController.get('date');
 
+
       var options = {
         mode : 'date',
-        date : moment(oldDate, Th.Settings.dateFormat).toDate()
+        date: oldDate
       };
 
       var errorText = "Error: Inténtelo más tarde si el problema continúa.",
@@ -31,7 +32,8 @@ Th.DateState = Em.State.extend({
             selectedDate = moment(nativeDate).format(Th.Settings.dateFormat);
           }
 
-          if ( oldDate !== selectedDate ) {
+          var formatOldDate = moment(oldDate).format(Th.Settings.dateFormat);
+          if ( formatOldDate !== selectedDate ) {
             self.chooseDate(sm, selectedDate);
           }
 
@@ -53,26 +55,20 @@ Th.DateState = Em.State.extend({
 	},
 
   // this implementation to be called in "web environment"
-  // App.__container__.lookup('manager:application').send('selectDate', '20130202');
-  chooseDate: function(sm, date) {
+  // App.__container__.lookup('manager:application').send('chooseDate', '20130202');
+  chooseDate: function(sm, formatDate) {
 
     var controller = App.eventController;
     controller.clear();
 
+    var date = moment(formatDate, Th.Settings.dateFormat).toDate();
 
     App.applicationController.set('date', date);
 
-    var data = {api: 'true', date: date};
+    var data = {api: 'true', date: formatDate};
 
-    var url = Th.Settings.server;
-
-    jQuery.ajax({
-      url: url,
-      type: 'GET',
+    $.ajax({
       data: data, 
-      crossDomain: true,
-      dataType: 'jsonp',
-      contentType: 'application/json; charset=utf-8',
 
       success: function(response) {
 

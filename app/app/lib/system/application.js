@@ -5,6 +5,17 @@ Th.Application = Em.Application.extend(Th.InitDocumentEvent, Th.HasConnection, T
     this._startWithConnection();
 
   },
+  _initSettings: function() {
+    moment.lang('es', Th.MomentLangs.es);
+    moment.lang( 'es' );
+    $.ajaxSetup({
+      url: Th.Settings.server,
+      type: 'GET',
+      crossDomain: true,
+      dataType: 'jsonp',
+      contentType: 'application/json; charset=utf-8'
+    });
+  },
 
   _readSettings: function() {
 
@@ -20,24 +31,17 @@ Th.Application = Em.Application.extend(Th.InitDocumentEvent, Th.HasConnection, T
     
     var self = this;
 
-    var date = moment().format(Th.Settings.dateFormat);
-    //var date = '20130215';
+    //var date = moment('20130215', 'YYYYMMDD' ).toDate();
+    var date = new Date(); 
     App.applicationController.set('date', date);
-    var data = { api: 'true', sideload: 'true', date: date};
 
-    var url = Th.Settings.server;
+    var formatDate = moment(date).format(Th.Settings.dateFormat);
+    var data = { api: 'true', sideload: 'true', date: formatDate};
 
-    jQuery.ajax({
-      url: url,
-      type: 'GET',
+    $.ajax({
       data: data, 
-      crossDomain: true,
-      dataType: 'jsonp',
-      contentType: 'application/json; charset=utf-8',
 
       success: function(response) {
-
-
         var categories = response.categories;
         var events = response.events;
 
@@ -110,6 +114,7 @@ Th.Application = Em.Application.extend(Th.InitDocumentEvent, Th.HasConnection, T
   _startWithConnection: function() {
 
     this._readSettings();
+    this._initSettings();
     this._initDocumentEvents({backbutton: 'backbutton'});
 
     this._insertViews();

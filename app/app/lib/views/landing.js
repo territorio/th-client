@@ -30,6 +30,7 @@ App.LandingScreenView = Th.LandingScreenView.extend(Th.Context, {
   selectedCategoryBinding: Em.Binding.oneWay('App.categoryController.selected'),
 
 	eventsBinding: Em.Binding.oneWay('App.eventController.content'),
+	selectedDateBinding: Em.Binding.oneWay('App.applicationController.date'),
 
 	action: 'closeCategory'
 
