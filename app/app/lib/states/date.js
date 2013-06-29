@@ -41,7 +41,10 @@ Th.DateState = Em.State.extend({
           
 
         } else {
-          App.alert(errorText);
+
+          if ( !App.isAndroid ) {
+            App.alert(errorText);
+          }
           sm.goToState('landing');
         }
 
