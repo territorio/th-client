@@ -71,6 +71,8 @@ Th.Application = Em.Application.extend(Th.InitDocumentEvent, Th.HasConnection, T
 
   backbutton: function() {
 
+    console.log('back button');
+
     var manager = this.__container__.lookup('manager:application');
 
     var state = manager.get('currentState.name');
@@ -86,6 +88,8 @@ Th.Application = Em.Application.extend(Th.InitDocumentEvent, Th.HasConnection, T
 
     } else if ( state === 'category' ) {
       manager.send('closeCategory');
+    } else if ( state === 'date' ) {
+      manager.send('goToLanding');
     }
 
   },

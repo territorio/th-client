@@ -57,6 +57,13 @@ Th.DateState = Em.State.extend({
 
 	},
 
+
+  goToLanding: function(sm) {
+
+    sm.goToState('landing');
+
+  },
+
   // this implementation to be called in "web environment"
   // App.__container__.lookup('manager:application').send('chooseDate', '20130202');
   chooseDate: function(sm, formatDate) {
