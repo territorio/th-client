@@ -117,6 +117,7 @@ Th.Application = Em.Application.extend(Th.InitDocumentEvent, Th.HasConnection, T
 
   _startWithConnection: function() {
 
+    this._manageEventListeners();
     this._readSettings();
     this._initSettings();
     this._initDocumentEvents({backbutton: 'backbutton'});
@@ -140,6 +141,46 @@ Th.Application = Em.Application.extend(Th.InitDocumentEvent, Th.HasConnection, T
 
     });
 
+  },
+
+  _manageEventListeners: function() {
+
+    var bodyElement = document.body;
+
+/*
+window.addEventListener("touchmove", function(event) {
+  if (!event.target.classList.contains('scroller') ) {
+    // no more scrolling
+    event.preventDefault();
   }
+}, false);
+
+  Miss a drag as we are waiting for WebCore's response
+    bodyElement.addEventListener('touchstart', function(event) {
+      //if ( $(event.target).hasClass('is-tap') ) {
+        event.preventDefault();
+      //}
+		}, false);	
+
+    bodyElement.addEventListener('drag', function(event) {
+        event.preventDefault();
+		}, false);	
+    bodyElement.addEventListener('touchmove', function(event) {
+      if ( $(event.target).hasClass('is-tap') ) {
+        event.preventDefault();
+      }
+		}, false);	
+
+    bodyElement.addEventListener('touchend', function(event) {
+      if ( $(event.target).hasClass('is-tap') ) {
+        event.preventDefault();
+      }
+		}, false);	
+    */
+
+
+  }
+
+
 
 });
