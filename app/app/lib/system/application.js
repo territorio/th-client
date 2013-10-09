@@ -44,10 +44,12 @@ Th.Application = Em.Application.extend(Th.InitDocumentEvent, Th.HasConnection, T
       success: function(response) {
         var categories = response.categories;
         var events = response.events;
+        var places = response.places;
 
         App.categoryController.set('content', categories);
+        App.placeController.set('content', places);
 
-        var category = Th.CategoryAllType;
+        var category = Th.SelectionAllType;
         App.categoryController.set('selected', category);
 
         App.eventController.set('all', events);

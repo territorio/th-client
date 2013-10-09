@@ -21,7 +21,7 @@ Th.EventController = Em.ArrayController.extend({
 
     if ( !!all ) {
 
-      if ( category === Th.CategoryAllType ) {
+      if ( category === Th.SelectionAllType ) {
        content = all;
       } else {
 
@@ -34,6 +34,27 @@ Th.EventController = Em.ArrayController.extend({
         });
 
       }
+
+      this.set('content', content);
+
+    }
+
+  },
+
+  filterByPlace: function(place) {
+    
+    var all = this.get('all'),
+        content;
+
+    if ( !!all ) {
+
+      content = all.filter(function(event) {
+        
+        return event.places.some(function(id) {
+          return id === place.id;
+        });
+
+      });
 
       this.set('content', content);
 

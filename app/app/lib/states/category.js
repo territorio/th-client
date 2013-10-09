@@ -15,11 +15,17 @@ Th.CategoryState = Em.State.extend({
 	},
 
 	selectCategory: function(sm, category) {
-
     App.categoryController.set('selected', category);
+    App.placeController.set('selected', null);
     App.eventController.filterByCategory(category);
 		sm.goToState('landing');
+	},
 
+	selectPlace: function(sm, place) {
+    App.categoryController.set('selected', null);
+    App.placeController.set('selected', place);
+    App.eventController.filterByPlace(place);
+		sm.goToState('landing');
 	},
 
 	closeCategory: function(sm) {
