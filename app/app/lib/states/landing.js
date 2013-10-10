@@ -11,8 +11,10 @@ Th.LandingState = Em.State.extend({
 
 		sm.goToState('date');
 
-  }
+  },
 
+	toggleEvent: function(sm) {
 
+	}
 
 });

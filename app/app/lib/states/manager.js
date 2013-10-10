@@ -8,6 +8,7 @@ Th.StateManager = Em.StateManager.extend({
   send: function(event, context) {
 
     var eventName = fmt("%@.%@", [get(this, 'currentState.name'), event]),
+				slug,
         value;
 
     if ( context && context instanceof DS.Model ) {
@@ -15,9 +16,27 @@ Th.StateManager = Em.StateManager.extend({
       if ( !!id ) {
         value = id;
       }
+
+      slug = context.get('slug');
     }
 
-		console.log(eventName,value);
+		if ( context && !slug && context.hasOwnProperty('slug') ) {
+			slug = context.slug;
+		}
+
+
+
+		if ( App.analytics ) {
+			//App.analytics('send', 'event', get(this, 'currentState.name'), event); 
+			var page = '/' +get(this, 'currentState.name')+'/' + event; 
+			if ( slug ) {
+				page += '/'+slug;
+			}
+
+      App.analytics('send', 'pageview', {'page': page}); 
+		}
+
+		//console.log(eventName,value);
     this._super(event, context);
 
   },

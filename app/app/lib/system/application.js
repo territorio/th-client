@@ -96,6 +96,37 @@ Th.Application = Em.Application.extend(Th.InitDocumentEvent, Th.HasConnection, T
 
   },
 
+  _setupAnalytics: function() {
+
+    if ( true ) {
+    //if ( this.isNative ) {
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','source/js/analytics.js','ga');
+
+      this.analytics = ga;
+
+      if (window.DeviceInfo && DeviceInfo.uuid !== undefined) {
+        this.analyticsClientId = DeviceInfo.uuid;
+      } else if (window.device && device.uuid !== undefined) {
+        this.analyticsClientId = device.uuid;
+      } else {
+        this.analyticsClientId = '92bf24a5-20e5-4181-9778-2835f28c52d8';
+      }
+
+      this.analytics('create', 'UA-44749678-1', {
+        'storage': 'none',
+        'clientId': this.analyticsClientId });
+
+      this.analytics('send', 'pageview', {'page': '/index'}); 
+
+      console.log('setup analytics');
+
+    }
+
+  },
+
 
   _insertViews: function() {
     
@@ -123,6 +154,7 @@ Th.Application = Em.Application.extend(Th.InitDocumentEvent, Th.HasConnection, T
     this._readSettings();
     this._initSettings();
     this._initDocumentEvents({backbutton: 'backbutton'});
+    this._setupAnalytics();
 
     this._insertViews();
 
