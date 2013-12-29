@@ -28,12 +28,17 @@ Th.StateManager = Em.StateManager.extend({
 
 		if ( App.analytics ) {
 			//App.analytics('send', 'event', get(this, 'currentState.name'), event); 
-			var page = '/' +get(this, 'currentState.name')+'/' + event; 
+      var category = get(this, 'currentState.name');
+			var page = '/' +category+'/' + event; 
 			if ( slug ) {
 				page += '/'+slug;
 			}
 
       App.analytics('send', 'pageview', {'page': page}); 
+      App.analytics('send', 'event', {
+        'eventCategory' : category,
+        'eventAction' : event 
+      });
 		}
 
 		//console.log(eventName,value);

@@ -14,6 +14,90 @@ Th.EventController = Em.ArrayController.extend({
     this.set('content', null);
   },
 
+  filterBySearch: function(searchString) {
+
+    this.clear();
+
+    var self = this,
+        data = {api: 'true', search: searchString };
+
+
+    $.ajax({
+      data: data, 
+
+      success: function(response) {
+
+        var events = response.events;
+        self.set('all', response.events);
+        self.set('content', response.events);
+
+      },
+
+      error: function(response) {
+
+        var text = "Ha habido un problema obteniendo el contenido. Inténtelo más tarde si el problema continúa.";
+        App.alert(text);
+
+      }
+
+    });
+
+  },
+
+  filterComingByCategory: function(category) {
+    this.clear();
+
+    var self = this,
+        data = {api: 'true', category: category.slug };
+
+    $.ajax({
+      data: data, 
+
+      success: function(response) {
+
+        var events = response.events;
+        self.set('all', response.events);
+        self.set('content', response.events);
+
+      },
+
+      error: function(response) {
+
+        var text = "Ha habido un problema obteniendo el contenido. Inténtelo más tarde si el problema continúa.";
+        App.alert(text);
+
+      }
+
+    });
+  },
+
+  filterComingByPlace: function(place) {
+    this.clear();
+
+    var self = this,
+        data = {api: 'true', place: place.slug };
+
+    $.ajax({
+      data: data, 
+
+      success: function(response) {
+
+        var events = response.events;
+        self.set('all', response.events);
+        self.set('content', response.events);
+
+      },
+
+      error: function(response) {
+
+        var text = "Ha habido un problema obteniendo el contenido. Inténtelo más tarde si el problema continúa.";
+        App.alert(text);
+
+      }
+
+    });
+  },
+
   filterByCategory: function(category) {
     
     var all = this.get('all'),
