@@ -5,7 +5,7 @@ gem "rack"
 
 group :assets do
 
-  gem 'therubyracer', '~> 0.11.2'
+  gem 'therubyracer', '~> 0.12.0'
   gem "execjs"
   gem "colored"
   gem "jshintrb"

@@ -9,8 +9,18 @@ Th.CategoryState = Em.State.extend({
 
 	exit: function(sm) {
 
-    App.applicationController.set('selectingComingEvents', false);
-		App.applicationController.set('isMenuCategory', false);
+    var ac = App.applicationController;
+    var eventName = 'transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd';
+    var $landing = $("#landing-aside-front");
+
+    ac.set('isClosingMenuCategory', true);
+    $landing.bind(eventName, function(){ 
+      ac.set('isClosingMenuCategory', false);
+      $landing.unbind(eventName);
+    });
+
+    ac.set('selectingComingEvents', false);
+		ac.set('isMenuCategory', false);
 		this._super();
 
 	},
