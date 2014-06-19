@@ -1,5 +1,6 @@
 NERD_*
 tmp
+.bundle
 *swp
 *.DS_Store
 *pyc
