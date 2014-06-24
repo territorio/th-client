@@ -1,6 +1,7 @@
 Th.ApplicationController = Em.ObjectController.extend({
-  isClosingMenuCategory: false,
 	isMenuCategory: false,
+	isMenuCategoryEnded: false,
+
   isSearch: false,
   selectingComingEvents: false,
 

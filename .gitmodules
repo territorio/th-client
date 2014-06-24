@@ -4,9 +4,6 @@
 [submodule "app/submodules/th-client-views"]
 	path = app/submodules/th-client-views
 	url = git@github.com:territorio/th-client-views.git
-[submodule "app/submodules/ember-touch"]
-	path = app/submodules/ember-touch
-	url = git@github.com:territorio/ember-touch.git
 [submodule "app/submodules/ember.js"]
 	path = app/submodules/ember.js
 	url = git@github.com:territorio/ember.js.git

@@ -1,4 +1,4 @@
-
+/*
 App.landingGestureDelegate = Em.GestureDelegate.create({
   name: 'landing_gesture_delegate',
 
@@ -18,11 +18,11 @@ App.landingGestureDelegate = Em.GestureDelegate.create({
   }
 
 });
+*/
 
 
 App.LandingScreenView = Th.LandingScreenView.extend(Th.Context, {
 
-	gestureDelegate: App.landingGestureDelegate,
 
 	isAsideLeftBinding: Em.Binding.oneWay('App.applicationController.isMenuCategory'),
 	isSearchBinding: Em.Binding.oneWay('App.applicationController.isSearch'),

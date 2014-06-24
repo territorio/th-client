@@ -38,7 +38,10 @@ Th.LandingState = Em.State.extend({
 
   },
 
-	toggleEvent: function(sm) {
+	toggleEvent: function(sm, view) {
+
+    console.log('toggling event')
+    view.set('isContentVisible', !view.get('isContentVisible'));
 
 	}
 
