@@ -97,8 +97,9 @@ Th.Application = Em.Application.extend(Th.InitDocumentEvent, Th.HasConnection, T
   },
 
   _setupAnalytics: function() {
-
-    if ( true ) {
+    
+    // TODO: disable for error in Android???
+    if ( false ) {
     //if ( this.isNative ) {
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
